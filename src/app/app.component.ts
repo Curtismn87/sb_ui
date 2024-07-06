@@ -19,12 +19,16 @@ export class AppComponent {
   constructor(private http: HttpClient) {}
 
   async fetchMessage(): Promise<void> {
-    const url = `/.netlify/functions/hello-world?name=${this.name}`;
+    const url = `/.netlify/functions/generate-text`;
+    const body = { name: this.name };
     try {
-      const response = await this.http.get<any>(url).toPromise();
+      const response = await this.http.post<any>(url, body).toPromise();
       this.message = response.message;
     } catch (error) {
       console.error('Error fetching message', error);
+      this.message = 'Failed to fetch message.';
     }
   }
-}
+
+
+} // end export

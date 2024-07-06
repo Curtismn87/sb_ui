@@ -1,6 +1,6 @@
 <div>
-  <input type="text" [(ngModel)]="name" placeholder="Enter your name" />
-  <button (click)="fetchMessage()">Get Message</button>
+  <input type="text" [(ngModel)]="name" placeholder="Enter a name" />
+  <button (click)="fetchMessage()">Get Story</button>
 </div>
 <div *ngIf="message">
   <p>{{ message }}</p>
