@@ -11,8 +11,8 @@ const genAI = new GoogleGenerativeAI(apiKey);
 const handler: Handler = async (event, context) => {
   try {
     const { name = 'stranger' } = JSON.parse(event.body || '{}');
-    const prompt = `Write a story about a ${name}.`;    
-    
+    const prompt = `Write a children's story about a child named ${name}.`;    
+
     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
     const result = await model.generateContent(prompt);
     const response = await result.response;
