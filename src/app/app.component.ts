@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 export class AppComponent {
   title = 'sb_ui';
   name: string = '';
+  age: number = 0;
   message: string | null = null;
   loading: boolean = false;
   audioSrc: string | undefined;
@@ -26,7 +27,7 @@ export class AppComponent {
 
   async fetchMessage(): Promise<void> {
     const url = `/.netlify/functions/generate-text`;
-    const body = { name: this.name };
+    const body = { name: this.name, age: this.age };
     this.loading = true;
     try {
       const response = await this.http.post<any>(url, body).toPromise();

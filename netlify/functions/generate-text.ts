@@ -10,13 +10,13 @@ const genAI = new GoogleGenerativeAI(apiKey);
 
 const handler: Handler = async (event, context) => {
   try {
-    const { name = 'stranger' } = JSON.parse(event.body || '{}');
-    const prompt = `Write a children's story about a child named ${name}.`;    
+    const { name = '', age = '' } = JSON.parse(event.body || '{}');
+    const prompt = `Write a children's story about a ${age} year old child named ${name}. Start the story by saying: This is a story about ${name}, a ${age} year old`;    
 
     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
     const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const text = await response.text();
+    const response = result.response;
+    const text = response.text();
 
     return {
       statusCode: 200,
