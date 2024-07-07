@@ -1,15 +1,21 @@
-<app-input-form *ngIf="!message && !audioSrc" (submit)="fetchMessage($event)"></app-input-form>
+<ng-container [ngSwitch]="currentScreen">
+  <app-user-preferences *ngSwitchCase="'preferences'" (submit)="setPreferences($event)"></app-user-preferences>
 
-<div *ngIf="loading">
-  <p>Your message is generating...</p>
+  <app-input-form *ngSwitchCase="'input'" (submit)="fetchMessage($event)"></app-input-form>
+
+  <ng-container *ngSwitchCase="'result'">
+    <app-result-screen *ngIf="!loading && (message || audioSrc)" 
+                       [message]="message" 
+                       [audioSrc]="audioSrc" 
+                       [isPlaying]="isPlaying"
+                       (regenerate)="regenerateStory()">
+    </app-result-screen>
+  </ng-container>
+</ng-container>
+
+<div *ngIf="loading" class="loading-overlay">
+  <p>Your story is generating...</p>
 </div>
-
-<app-result-screen *ngIf="!loading && (message || audioSrc)" 
-                   [message]="message" 
-                   [audioSrc]="audioSrc" 
-                   [isPlaying]="isPlaying"
-                   (regenerate)="regenerateStory()">
-</app-result-screen>
 
 
 <router-outlet />

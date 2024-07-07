@@ -1,0 +1,9 @@
+<form (ngSubmit)="onSubmit()">
+    <label for="gender">Gender:</label>
+    <select id="gender" [(ngModel)]="gender" name="gender">
+      <option value="">Select gender</option>
+      <option value="boy">Boy</option>
+      <option value="girl">Girl</option>
+    </select>
+    <button type="submit">Set Preferences</button>
+  </form>

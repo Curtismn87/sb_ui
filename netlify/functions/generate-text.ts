@@ -10,8 +10,9 @@ const genAI = new GoogleGenerativeAI(apiKey);
 
 const handler: Handler = async (event, context) => {
   try {
-    const { name = '', age = '' } = JSON.parse(event.body || '{}');
-    const prompt = `Write a children's story about a ${age} year old child named ${name}. Start the story by saying: This is a story about ${name}, a ${age} year old`;    
+    const { name = '', age = '', gender = '' } = JSON.parse(event.body || '{}');
+    let prompt = `Write a children's story about a ${age} year old ${gender} named ${name}. `;
+    prompt += `Start the story by saying: This is a story about ${name}, a ${age} year old ${gender}`;
 
     const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
     const result = await model.generateContent(prompt);

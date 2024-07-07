@@ -5,11 +5,14 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { InputFormComponent } from './input-form/input-form.component';
 import { ResultScreenComponent } from './result-screen/result-screen.component';
+import { UserPreferencesComponent } from './user-preferences/user-preferences.component';
+
+
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HttpClientModule, FormsModule, CommonModule, InputFormComponent, ResultScreenComponent],
+  imports: [RouterOutlet, HttpClientModule, FormsModule, CommonModule, InputFormComponent, ResultScreenComponent, UserPreferencesComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
@@ -21,18 +24,25 @@ export class AppComponent {
   audio: HTMLAudioElement | null = null;
   isPlaying: boolean = false;
   isAudioGenerated: boolean = false; 
+  currentScreen: 'preferences' | 'input' | 'result' = 'preferences';
+  user_prefs: { gender: string } | null = null;
+
 
 
   constructor(private http: HttpClient) {}
 
   async fetchMessage(data: { name: string; age: number }): Promise<void> {
+    console.log('Current preferences:', this.user_prefs); // For debugging
     const url = `/.netlify/functions/generate-text`;
-    const body = { name: data.name, age: data.age };
+    const body = { name: data.name, age: data.age, gender: this.user_prefs?.gender || 'child'};
+    console.log('Sending to server:', body); 
+
     this.loading = true;
     try {
       const response = await this.http.post<any>(url, body).toPromise();
       this.message = response.message;
       await this.generateSpeech(response.message);
+      this.currentScreen = 'result';
     } catch (error) {
       console.error('Error fetching message', error);
       this.message = 'Failed to fetch message.';
@@ -68,6 +78,18 @@ export class AppComponent {
     }
   }
 
+  setPreferences(prefs: { gender: string }): void {
+    if (prefs instanceof SubmitEvent) {
+      // If it's a SubmitEvent, we don't want to set it as preferences
+      console.log('Received SubmitEvent, ignoring');
+      return;
+    }
+    
+    this.user_prefs = prefs;
+    console.log('Preferences set:', this.user_prefs);
+    this.currentScreen = 'input';
+  }
+
   playAudio(): void {
     if (this.audio) {
       if (this.isPlaying) {
@@ -83,6 +105,8 @@ export class AppComponent {
     this.message = null;
     this.audioSrc = null;
     this.isPlaying = false;
+    this.currentScreen = 'preferences'; // Go back to preferences screen
+    this.user_prefs = null; // Reset preferences
     if (this.audio) {
       this.audio.pause();
       this.audio = null;
