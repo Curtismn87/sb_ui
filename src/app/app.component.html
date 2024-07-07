@@ -5,6 +5,9 @@
 <div *ngIf="loading">
   <p>Your message is generating...</p>
 </div>
+<div *ngIf="audioSrc">
+  <button (click)="playAudio()">{{ isPlaying ? 'Pause Audio' : 'Play Audio' }}</button>
+</div>
 <div *ngIf="!loading && message">
   <p>{{ message }}</p>
 </div>
