@@ -15,18 +15,23 @@ export class AppComponent {
   title = 'sb_ui';
   name: string = '';
   message: string | null = null;
+  loading: boolean = false;
+
 
   constructor(private http: HttpClient) {}
 
   async fetchMessage(): Promise<void> {
     const url = `/.netlify/functions/generate-text`;
     const body = { name: this.name };
+    this.loading = true;
     try {
       const response = await this.http.post<any>(url, body).toPromise();
       this.message = response.message;
     } catch (error) {
       console.error('Error fetching message', error);
       this.message = 'Failed to fetch message.';
+    } finally {
+      this.loading = false;
     }
   }
 

@@ -1,8 +1,11 @@
 <div>
-  <input type="text" [(ngModel)]="name" placeholder="Enter a name" />
+  <input type="text" [(ngModel)]="name" placeholder="Enter your name" />
   <button (click)="fetchMessage()">Get Story</button>
 </div>
-<div *ngIf="message">
+<div *ngIf="loading">
+  <p>Your message is generating...</p>
+</div>
+<div *ngIf="!loading && message">
   <p>{{ message }}</p>
 </div>
 
