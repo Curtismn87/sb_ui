@@ -3,31 +3,31 @@ import { RouterOutlet } from '@angular/router';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { InputFormComponent } from './input-form/input-form.component';
+import { ResultScreenComponent } from './result-screen/result-screen.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HttpClientModule, FormsModule, CommonModule],
+  imports: [RouterOutlet, HttpClientModule, FormsModule, CommonModule, InputFormComponent, ResultScreenComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
   title = 'sb_ui';
-  name: string = '';
-  age: number = 0;
   message: string | null = null;
   loading: boolean = false;
-  audioSrc: string | undefined;
+  audioSrc: string | null = null;
   audio: HTMLAudioElement | null = null;
   isPlaying: boolean = false;
-
+  isAudioGenerated: boolean = false; 
 
 
   constructor(private http: HttpClient) {}
 
-  async fetchMessage(): Promise<void> {
+  async fetchMessage(data: { name: string; age: number }): Promise<void> {
     const url = `/.netlify/functions/generate-text`;
-    const body = { name: this.name, age: this.age };
+    const body = { name: data.name, age: data.age };
     this.loading = true;
     try {
       const response = await this.http.post<any>(url, body).toPromise();
@@ -46,9 +46,8 @@ export class AppComponent {
     const body = { text };
     this.loading = true;
     try {
-      const response = await this.http.post<{audioContent: string}>(url, body).toPromise();
+      const response = await this.http.post<{ audioContent: string }>(url, body).toPromise();
       if (response && response.audioContent) {
-        // Create a Blob from the base64 encoded audio content
         const byteCharacters = atob(response.audioContent);
         const byteNumbers = new Array(byteCharacters.length);
         for (let i = 0; i < byteCharacters.length; i++) {
@@ -56,8 +55,6 @@ export class AppComponent {
         }
         const byteArray = new Uint8Array(byteNumbers);
         const blob = new Blob([byteArray], { type: 'audio/mp3' });
-        
-        // Create a URL for the Blob
         this.audioSrc = URL.createObjectURL(blob);
         this.audio = new Audio(this.audioSrc);
       } else {
@@ -69,7 +66,6 @@ export class AppComponent {
     } finally {
       this.loading = false;
     }
-
   }
 
   playAudio(): void {
@@ -82,7 +78,15 @@ export class AppComponent {
       this.isPlaying = !this.isPlaying;
     }
   }
+
+  regenerateStory(): void {
+    this.message = null;
+    this.audioSrc = null;
+    this.isPlaying = false;
+    if (this.audio) {
+      this.audio.pause();
+      this.audio = null;
+    }
+  }
   
-
-
 } // end export

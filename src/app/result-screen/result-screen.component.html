@@ -1,0 +1,5 @@
+<div *ngIf="message">
+  <button (click)="playPauseAudio()">{{ isPlaying ? 'Pause Audio' : 'Play Audio' }}</button>
+  <button (click)="onRegenerate()">Make Another Story</button>
+  <p>{{ message }}</p>
+</div>

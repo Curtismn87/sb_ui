@@ -1,17 +1,15 @@
-<div>
-  <input type="text" [(ngModel)]="name" placeholder="Enter your name" />
-  <input type="number" [(ngModel)]="age" placeholder="Enter your age" min="0" />
-  <button (click)="fetchMessage()">Get Story</button>
-</div>
+<app-input-form *ngIf="!message && !audioSrc" (submit)="fetchMessage($event)"></app-input-form>
+
 <div *ngIf="loading">
   <p>Your message is generating...</p>
 </div>
-<div *ngIf="audioSrc">
-  <button (click)="playAudio()">{{ isPlaying ? 'Pause Audio' : 'Play Audio' }}</button>
-</div>
-<div *ngIf="!loading && message">
-  <p>{{ message }}</p>
-</div>
+
+<app-result-screen *ngIf="!loading && (message || audioSrc)" 
+                   [message]="message" 
+                   [audioSrc]="audioSrc" 
+                   [isPlaying]="isPlaying"
+                   (regenerate)="regenerateStory()">
+</app-result-screen>
 
 
 <router-outlet />
