@@ -1,5 +1,9 @@
-<div *ngIf="message">
-  <button (click)="playPauseAudio()">{{ isPlaying ? 'Pause Audio' : 'Play Audio' }}</button>
-  <button (click)="onRegenerate()">Make Another Story</button>
-  <p>{{ message }}</p>
+<div class="results-container" *ngIf="message">
+  <div class="button-group">
+    <button class="play-pause-button" (click)="playPauseAudio()">{{ isPlaying ? 'Pause Audio' : 'Play Audio' }}</button>
+    <button class="regenerate-button" (click)="onRegenerate()">Make Another Story</button>
+  </div>
+  <div class="story-message">
+    <p>{{ message }}</p>
+  </div>
 </div>
