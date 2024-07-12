@@ -32,6 +32,11 @@ export class ResultScreenComponent {
   }
 
   onRegenerate(): void {
+    if (this.audio) {
+      this.audio.pause();
+      this.audio.src = ''; // Clear the source to release memory
+      this.audio = null; // Reset the audio object
+    }
     this.regenerate.emit();
   }
 }
