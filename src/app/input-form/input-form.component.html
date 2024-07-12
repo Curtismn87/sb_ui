@@ -1,6 +1,21 @@
-<div>
-    <input type="text" [(ngModel)]="name" placeholder="Enter your name" />
-    <input type="number" [(ngModel)]="age" placeholder="Enter your age" min="0" />
-    <button (click)="onSubmit()">Get Story</button>
+<form class="preferences-form">
+  <div class="form-group">
+    <label for="learning_pref">Learning Preference:</label>
+    <select id="learning_pref" [(ngModel)]="learning_pref" name="learning_pref">
+      <option value="friends">Friends</option>
+      <option value="sharing">Sharing</option>
+      <option value="school">School</option>
+    </select>
   </div>
-  
+
+  <div class="form-group">
+    <label for="story_length">Story Length:</label>
+    <select id="story_length" [(ngModel)]="story_length" name="story_length">
+      <option value="5">5 minutes</option>
+      <option value="10">10 minutes</option>
+      <option value="15">15 minutes</option>
+    </select>
+  </div>
+
+  <button (click)="onSubmit()">Get Story</button>
+</form>

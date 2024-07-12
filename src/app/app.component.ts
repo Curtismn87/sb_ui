@@ -16,6 +16,7 @@ import { UserPreferencesComponent } from './user-preferences/user-preferences.co
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
+
 export class AppComponent {
   title = 'sb_ui';
   message: string | null = null;
@@ -23,19 +24,34 @@ export class AppComponent {
   audioSrc: string | null = null;
   audio: HTMLAudioElement | null = null;
   isPlaying: boolean = false;
-  isAudioGenerated: boolean = false; 
+  isAudioGenerated: boolean = false;
   currentScreen: 'preferences' | 'input' | 'result' = 'preferences';
-  user_prefs: { gender: string } | null = null;
+  user_prefs: {
+    gender: string;
+    name: string;
+    age: number;
+    story_type: string;
+    fav_character: string;
+  } | null = null;
 
+  constructor(private http: HttpClient) { }
 
-
-  constructor(private http: HttpClient) {}
-
-  async fetchMessage(data: { name: string; age: number }): Promise<void> {
+  async fetchMessage(data: { learning_pref: string; story_length: number }): Promise<void> {
     console.log('Current preferences:', this.user_prefs); // For debugging
+    console.log('Current data:', data.learning_pref); // For debugging
+
     const url = `/.netlify/functions/generate-text`;
-    const body = { name: data.name, age: data.age, gender: this.user_prefs?.gender || 'child'};
-    console.log('Sending to server:', body); 
+    const body = {
+      learning_pref: data.learning_pref || '',
+      story_length: data.story_length || 5,
+      name: this.user_prefs?.name,
+      age: this.user_prefs?.age,
+      gender: this.user_prefs?.gender || 'child',
+      story_type: this.user_prefs?.story_type || '',
+      fav_character: this.user_prefs?.fav_character || ''
+    };
+
+    console.log('Sending to server:', body);
 
     this.loading = true;
     try {
@@ -78,13 +94,19 @@ export class AppComponent {
     }
   }
 
-  setPreferences(prefs: { gender: string }): void {
+  setPreferences(prefs: {
+    gender: string;
+    name: string;
+    age: number;
+    story_type: string;
+    fav_character: string;
+  }): void {
     if (prefs instanceof SubmitEvent) {
       // If it's a SubmitEvent, we don't want to set it as preferences
       console.log('Received SubmitEvent, ignoring');
       return;
     }
-    
+
     this.user_prefs = prefs;
     console.log('Preferences set:', this.user_prefs);
     this.currentScreen = 'input';
@@ -112,5 +134,5 @@ export class AppComponent {
       this.audio = null;
     }
   }
-  
+
 } // end export

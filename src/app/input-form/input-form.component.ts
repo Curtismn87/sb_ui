@@ -10,12 +10,13 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./input-form.component.scss']
 })
 export class InputFormComponent {
-  name: string = '';
-  age: number = 0;
+  learning_pref: string = '';
+  story_length: number = 0;
 
-  @Output() submit = new EventEmitter<{ name: string; age: number }>();
+  @Output() storySubmit = new EventEmitter<{ learning_pref: string; story_length: number }>();
 
   onSubmit(): void {
-    this.submit.emit({ name: this.name, age: this.age });
+    console.log("storySubmit: " + this.learning_pref + " " + this.story_length)
+    this.storySubmit.emit({ learning_pref: this.learning_pref, story_length: this.story_length });
   }
 }

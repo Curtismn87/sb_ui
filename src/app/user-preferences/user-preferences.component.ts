@@ -10,11 +10,20 @@ import { FormsModule } from '@angular/forms';
 })
 export class UserPreferencesComponent {
   gender: string = '';
+  name: string = '';
+  age: number = 0;
+  story_type: string = '';
+  fav_character: string = '';
 
-  @Output() submit = new EventEmitter<{ gender: string }>();
+  @Output() preferencesSubmit = new EventEmitter<{ gender: string; name: string; age: number; story_type: string; fav_character: string }>();
 
   onSubmit(): void {
-    console.log("What gender is set? " + this.gender)
-    this.submit.emit({ gender: this.gender });
+    this.preferencesSubmit.emit({
+      gender: this.gender,
+      name: this.name,
+      age: this.age,
+      story_type: this.story_type,
+      fav_character: this.fav_character
+    });
   }
 }

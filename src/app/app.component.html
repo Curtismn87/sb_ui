@@ -1,7 +1,7 @@
 <ng-container [ngSwitch]="currentScreen">
-  <app-user-preferences *ngSwitchCase="'preferences'" (submit)="setPreferences($event)"></app-user-preferences>
+  <app-user-preferences *ngSwitchCase="'preferences'" (preferencesSubmit)="setPreferences($event)"></app-user-preferences>
 
-  <app-input-form *ngSwitchCase="'input'" (submit)="fetchMessage($event)"></app-input-form>
+  <app-input-form *ngSwitchCase="'input'" (storySubmit)="fetchMessage($event)"></app-input-form>
 
   <ng-container *ngSwitchCase="'result'">
     <app-result-screen *ngIf="!loading && (message || audioSrc)" 

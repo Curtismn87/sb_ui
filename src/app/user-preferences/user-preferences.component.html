@@ -1,9 +1,39 @@
-<form (ngSubmit)="onSubmit()">
+<form (ngSubmit)="onSubmit()" class="preferences-form">
+  <div class="form-group">
     <label for="gender">Gender:</label>
     <select id="gender" [(ngModel)]="gender" name="gender">
       <option value="">Select gender</option>
       <option value="boy">Boy</option>
       <option value="girl">Girl</option>
     </select>
-    <button type="submit">Set Preferences</button>
-  </form>
+  </div>
+
+  <div class="form-group">
+    <label for="name">Name:</label>
+    <input type="text" id="name" [(ngModel)]="name" name="name" placeholder="Enter name">
+  </div>
+
+  <div class="form-group">
+    <label for="age">Age:</label>
+    <input type="number" id="age" [(ngModel)]="age" name="age" placeholder="Enter age">
+  </div>
+
+  <div class="form-group">
+    <label for="story_type">Story Type:</label>
+    <select id="story_type" [(ngModel)]="story_type" name="story_type">
+      <option value="">Select story type</option>
+      <option value="Fairytales">Fairytales</option>
+      <option value="Adventures">Adventures</option>
+      <option value="Animals">Animals</option>
+      <option value="Superheros">Superheros</option>
+      <option value="Fantasy">Fantasy</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="fav_character">Favorite Character:</label>
+    <input type="text" id="fav_character" [(ngModel)]="fav_character" name="fav_character" placeholder="Enter favorite character">
+  </div>
+
+  <button type="submit">Set Preferences</button>
+</form>
